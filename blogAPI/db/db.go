@@ -1,37 +1,34 @@
+
 package db
 
 import (
-  "context"
-  "fmt"
-  "os"
+	"context"
+	"log"
 
-  "go.mongodb.org/mongo-driver/bson"
-  "go.mongodb.org/mongo-driver/mongo"
-  "go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func InitDB() {
-  // Use the SetServerAPIOptions() method to set the version of the Stable API on the client
-  connectionString := os.Getenv("MONGODB_URL")
-  serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-  opts := options.Client().ApplyURI(connectionString).SetServerAPIOptions(serverAPI)
+func Connect() {
 
-  // Create a new client and connect to the server
-  client, err := mongo.Connect(context.TODO(), opts)
-  if err != nil {
-    panic(err)
-  }
 
-  defer func() {
-    if err = client.Disconnect(context.TODO()); err != nil {
-      panic(err)
-    }
-  }()
 
-  // Send a ping to confirm a successful connection
-  if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err(); err != nil {
-    panic(err)
-  }
-  fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
+
+	// Correct way to create ClientOptions using pointer
+  MONGODB_URL := "mongodb+srv://ashfaqjani916:hellohs72oi@cluster0.wi6u3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+	clientOptions := options.Client().ApplyURI(MONGODB_URL)
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.Background(), clientOptions)
+	if err != nil {
+		log.Fatalf("Error connecting to the database: %v", err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Fatalf("Error pinging the database: %v", err)
+	}
+
+	log.Println("Connected to MongoDB successfully!")
 }
-

@@ -6,12 +6,14 @@ import(
   "fmt"
   "log"
   "blogAPI/db"
+  //"blogAPI/modules"
 )
 
 func main(){
-   db.InitDB()
+   db.Connect()
   r := mux.NewRouter()
-  r.HandleFunc("/",welcome) 
+  r.HandleFunc("/",welcome)
+ // r.HandleFunc("GET /users",  modules.getusers)
   http.ListenAndServe(":8080",r)
 }
 func welcome(res http.ResponseWriter, req *http.Request){
