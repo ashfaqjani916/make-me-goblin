@@ -14,12 +14,13 @@ import (
 
 
 func main(){
-  DB := db.InitDB()
-  h := handlers.New(DB)
+ 
   err := godotenv.Load()
   if err != nil{
     log.Fatal("Error loading .env file")
   }
+   DB := db.InitDB()
+  h := handlers.New(DB)
   r := mux.NewRouter()
   r.HandleFunc("/",func(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintln(w,"Welcome to api")
