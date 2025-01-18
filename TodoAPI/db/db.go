@@ -20,7 +20,7 @@ func InitDB() *gorm.DB{
   }
   
   log.Println("database connected successfully")
-  db.AutoMigrate(&models.User{})
+  db.AutoMigrate(&models.User{}, &models.Todo{})
 
   return db
 }  
