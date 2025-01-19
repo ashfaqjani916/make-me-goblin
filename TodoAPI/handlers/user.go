@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func (h handler) CreateUser(res http.ResponseWriter, req *http.Request){
@@ -33,3 +36,20 @@ func (h handler) CreateUser(res http.ResponseWriter, req *http.Request){
 
 } 
 
+func (h handler) DeleteUser (res http.ResponseWriter, req *http.Request){
+  fmt.Fprintln(res,"DeleteUser function is called ")
+  vars := mux.Vars(req)
+  id,err := strconv.Atoi(vars["id"])
+  if err != nil{
+    http.Error(res, "User not found",http.StatusBadRequest)
+    return 
+  }
+
+  if result := h.DB.Delete(&models.User{},id); result.Error != nil{
+    http.Error(res,result.Error.Error(),http.StatusInternalServerError)
+    return
+  }
+
+  res.WriteHeader(http.StatusNoContent)
+  fmt.Fprintln(res,"The user has been deleted")
+}

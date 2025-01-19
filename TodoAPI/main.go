@@ -26,6 +26,10 @@ func main(){
     fmt.Fprintln(w,"Welcome to api")
   }) 
   r.HandleFunc("/newuser",h.CreateUser).Methods(http.MethodPost)
+  r.HandleFunc("/deleteuser/{id}",h.DeleteUser).Methods("DELETE")
   r.HandleFunc("/newtodo",h.CreateTodo).Methods(http.MethodPost)
+  r.HandleFunc("/todos",h.GetTodos).Methods(http.MethodGet)
+  r.HandleFunc("/deletetodo/{id}",h.DeleteTodo).Methods(http.MethodDelete)
+  r.HandleFunc("/updatetodo",h.EditTodo).Methods(http.MethodPut)
   http.ListenAndServe(":8080",r)
 }
