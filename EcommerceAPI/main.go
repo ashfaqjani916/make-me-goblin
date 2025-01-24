@@ -1,17 +1,31 @@
 package main
 
 import (
+	"EcommerceAPI/internal/database"
+	"EcommerceAPI/internal/handlers"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 
 func main(){
+err := godotenv.Load()
+  if err != nil{
+    log.Fatal("Error loading .env file")
+  }
+
+  //initialse the db
+  DB := database.InitDB();
+  h := handlers.New(DB)
+
   r :=  mux.NewRouter()
   r.HandleFunc("/",func(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintln(w,"Hello world")
   })
+
   http.ListenAndServe(":8080",r)
 }
