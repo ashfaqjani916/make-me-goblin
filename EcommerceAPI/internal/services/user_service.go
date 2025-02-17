@@ -1,11 +1,35 @@
 package services
 
 import (
-	"fmt"
-	"net/http"
+	"EcommerceAPI/internal/models"
+	"EcommerceAPI/internal/repositories"
 )
 
-func CreateUser(res http.ResponseWriter, req http.Request){
-  fmt.Fprintln(res,"Called the create user function")
+type UserService interface{
+	GetAllUsers() ([]models.User, error)
+	GetUserById(int uint) (models.User, error)
+	CreateUser(user models.User) error
+}
 
+type userService struct{
+	repo repositories.UserRepository
+}
+
+func NewUserService(repo repositories.UserRepository) UserService{
+	return &userService{repo}
+}
+
+func (s *userService) GetAllUsers() ([]models.User, error){
+	return s.repo.GetAllUsers()
+}
+
+// GetUserByID retrieves a user by ID
+func (s *userService) GetUserByID(id uint) (models.User, error) {
+	return s.repo.GetUserByID(id)
+}
+
+// CreateUser handles user creation
+func (s *userService) CreateUser(user models.User) error {
+	// Business logic (e.g., email validation) can be added here
+	return s.repo.CreateUser(user)
 }
