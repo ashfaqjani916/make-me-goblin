@@ -1,0 +1,30 @@
+
+# Ignore build artifacts
+todo-api
+*.exe
+*.out
+*.a
+
+# Ignore vendor directory (if using Go modules)
+vendor/
+
+# Ignore Go test binaries
+*.test
+
+# Ignore Go cache and temporary files
+*.log
+*.swp
+*.tmp
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.iml
+
+# Ignore Git files
+.git
+.gitignore
