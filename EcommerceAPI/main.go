@@ -1,6 +1,10 @@
 package main
 
 import (
+	"EcommerceAPI/internal/database"
+	"EcommerceAPI/internal/handlers"
+	"EcommerceAPI/internal/repositories"
+	"EcommerceAPI/internal/services"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,7 +20,13 @@ err := godotenv.Load()
     log.Fatal("Error loading .env file")
   }
 
-	userHandler := InitialiseUserHandler();
+	db := database.InitDB()
+
+	userRepo := repositories.NewUserRepository(db) 
+	userService := services.NewUserService(userRepo)
+	userHandler := handlers.NewUserHandler(userService)
+
+
 
 
   r :=  mux.NewRouter()
@@ -26,7 +36,7 @@ err := godotenv.Load()
 
 	r.HandleFunc("/users", userHandler.GetAllUsers).Methods("GET")
 	r.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
-	r.HandleFunc("/users", userHandler.CreateUser).Methods("POST")
+	r.HandleFunc("/createUser", userHandler.CreateUser).Methods("POST")
 
 	fmt.Println("server is running on port 8080")
   http.ListenAndServe(":8080",r)

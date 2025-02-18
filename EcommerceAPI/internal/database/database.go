@@ -2,6 +2,7 @@ package database
 
 import (
 	"EcommerceAPI/internal/models"
+	"fmt"
 	"log"
 	"os"
 
@@ -17,6 +18,8 @@ func InitDB() *gorm.DB {
   if err != nil{
     log.Fatalln(err)
   }
+
+	fmt.Println("Database connected successfully")
   
   log.Println("database connected successfully")
   db.AutoMigrate(&models.User{},)

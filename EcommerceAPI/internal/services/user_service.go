@@ -16,7 +16,7 @@ type userService struct{
 }
 
 func NewUserService(repo repositories.UserRepository) UserService{
-	return &userService{repo}
+	return &userService{repo: repo}
 }
 
 func (s *userService) GetAllUsers() ([]models.User, error){
@@ -24,8 +24,8 @@ func (s *userService) GetAllUsers() ([]models.User, error){
 }
 
 // GetUserByID retrieves a user by ID
-func (s *userService) GetUserByID(id uint) (models.User, error) {
-	return s.repo.GetUserByID(id)
+func (s *userService) GetUserById(id uint) (models.User, error) {
+	return s.repo.GetUserById(id)
 }
 
 // CreateUser handles user creation
